@@ -1,9 +1,18 @@
-import * as React from 'react';
+import React, { useEffect } from 'react'; 
+import { connect } from 'react-redux';  
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import {
+  fetchFeeds
+} from "../../redux/actions";
 
-export const Home = () => {
+const Home = (props) => {
+
+  useEffect(()=> {   
+    props.fetchFeeds();
+  },[]); 
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -12,4 +21,12 @@ export const Home = () => {
      </Container>
     </React.Fragment>
   );
-} 
+}
+
+const mapStateToProps = ( state ) => ({ 
+  feeds : state,
+}); 
+const mapDispatchToProps = (dispatch) => ({
+  fetchFeeds: () =>dispatch(fetchFeeds()),
+});
+export default connect( mapStateToProps, mapDispatchToProps )(Home);

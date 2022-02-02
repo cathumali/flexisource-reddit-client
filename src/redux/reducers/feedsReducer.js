@@ -1,7 +1,7 @@
 const initialState = {
 };
 
-export const globalReducer = (state = initialState, action) => {
+export const feedsReducer = (state = initialState, action) => {
 
   switch (action.type) {
     default:
