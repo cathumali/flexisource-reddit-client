@@ -1,9 +1,17 @@
 import * as React from 'react';
-const Layout = () => { 
+import { CssBaseline, Container, Box  } from '@mui/material';
+import NavBar from '../NavBar';
+import './index.scss';
+
+const Layout = (props) => { 
 
   return (
     <React.Fragment>
-      
+      <CssBaseline />
+      <NavBar />
+      <Container maxWidth="md" id="content">
+        { props.children }
+      </Container>
     </React.Fragment>
   );
 }

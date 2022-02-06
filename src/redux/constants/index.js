@@ -1,1 +1,1 @@
-export * from './feedsConstants';
+export * from './postsConstants';

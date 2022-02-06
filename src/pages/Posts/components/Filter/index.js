@@ -5,27 +5,36 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const Filter = () => {
-  const [age, setAge] = React.useState('');
+const Filter = (props) => {
+  const [selectedOption, setSelectedOption] = React.useState('');
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setSelectedOption(event.target.value);
+    props.filterSelection(event.target)
   };
 
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <InputLabel id="demo-simple-select-label">
+          { props.label }
+        </InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={age}
-          label="Age"
+          value={selectedOption}
+          label={props.label}
           onChange={handleChange}
+          name={props.name}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          { props.options.map(option=>( 
+            <MenuItem 
+              key={option} 
+              value={option}
+            >
+              { option }
+            </MenuItem>)
+          )}
         </Select>
       </FormControl>
     </Box>
