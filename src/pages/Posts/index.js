@@ -10,14 +10,12 @@ import {
 import { config } from '../../utils/config';
 
 const Posts = (props) => {
-
   useEffect(()=> {   
     props.fetchPosts();
   },[]); 
 
   const filterSelection = (obj) => {
     props.fetchPosts(obj.value);
-    console.log(obj.value)
   }
 
   return (
@@ -42,6 +40,7 @@ const Posts = (props) => {
           </Grid>
 
           <Grid item xs={12}>
+              <div>{ props.loading && 'Loading Posts' }</div>
               { props.posts.data &&
                 props.posts.data.map((post, i) =>
                 <Post key={i} post={post} />

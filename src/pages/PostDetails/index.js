@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import { connect } from 'react-redux'; 
 import { Box, Divider } from '@mui/material';
 
@@ -11,11 +11,12 @@ import About from './components/About';
 import Comments from './components/Comments';
 
 const PostDetails = (props) => {
-  const [aboutData, setAboutData] = React.useState('');
-  const [postComments, setPostComments] = React.useState([]);
+  const [aboutData, setAboutData] = useState('');
+  const [postComments, setPostComments] = useState([]);
+  const [loadingAbout, setLoadingAbout] = useState(true);
+  const [loadingComments, setLoadingComments] = useState(true);
 
-  useEffect(()=> {   
-
+  useEffect(()=> {
     const { router : {
         params : {
           subreddit, 
@@ -25,10 +26,12 @@ const PostDetails = (props) => {
     } = props;
 
     props.fetchPostContents(subreddit).then(res => {
+      setLoadingAbout(false);
       setAboutData(res);
     });
 
     props.fetchPostComments(subreddit, id).then(res => {
+      setLoadingComments(false)
       setPostComments(res);
     });
 
@@ -36,10 +39,11 @@ const PostDetails = (props) => {
 
   return (
     <Box>
-      <About about={aboutData} />
+      { loadingAbout ? 'Loading Details' : <About about={aboutData} /> }
       <Divider />
-      <Divider/>
-      <Comments comments={postComments} />
+      <br/>
+      <Divider/>      
+      { loadingComments ? 'Loading Comments' : <Comments comments={postComments} /> }
     </Box>
   );
 }
