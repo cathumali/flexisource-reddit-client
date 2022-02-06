@@ -4,14 +4,14 @@ import {
   Routes, // Just Use Routes instead of "Switch"
   Route,
 } from "react-router-dom";
-import Home from "./pages/Home";
+import Posts from "./pages/Posts";
 
 function App() {
   return (
     <React.Fragment>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Posts />} />
       </Routes>
     </BrowserRouter>
     </React.Fragment>

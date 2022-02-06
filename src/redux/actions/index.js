@@ -1,1 +1,1 @@
-export * from './feedsAction';
+export * from './postsAction';

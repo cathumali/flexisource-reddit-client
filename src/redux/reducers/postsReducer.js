@@ -1,7 +1,7 @@
 const initialState = {
 };
 
-export const feedsReducer = (state = initialState, action) => {
+export const postsReducer = (state = initialState, action) => {
 
   switch (action.type) {
     default:

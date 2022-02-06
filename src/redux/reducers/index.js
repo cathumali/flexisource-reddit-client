@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 import { globalReducer } from './globalReducer';
-import { feedsReducer } from './feedsReducer';
+import { postsReducer } from './postsReducer';
 
 export const rootReducer = combineReducers({ 
   app   : globalReducer,
-  feeds : feedsReducer
+  posts : postsReducer
 });

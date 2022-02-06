@@ -1,7 +1,7 @@
 
 import { feedsConstants } from '../constants'; 
 
-export const API_URL = `https://www.reddit.com/r/subreddit/hot`;
+export const API_URL = `https://www.reddit.com/r/mobilewallpapers/hot.json`;
 
 export const getRequestHeaders = ( token=null ) => {
   const TOKEN = token ? token : '-xynhmitaz8Y23ckudz2bm5352Msu1Q';
@@ -17,13 +17,13 @@ export const getRequestHeaders = ( token=null ) => {
   return requestHeaders;
 }
 
-const fetchFeedsService = (requestHeaders, params='' ) => {
+const fetchPostsService = (requestHeaders, params='' ) => {
   return fetch(`${API_URL}${params}`, requestHeaders).then(res => res.json() );
 }
 
-export const fetchFeeds = () => dispatch => 
+export const fetchPosts = () => dispatch => 
 {
-  fetchFeedsService().then(res => {
+  fetchPostsService().then(res => {
     const { code, data, message } = res;
     if (code == 200) {
       dispatch({ 
