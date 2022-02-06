@@ -4,9 +4,9 @@ import {
   Routes, // Just Use Routes instead of "Switch"
   Route,
 } from "react-router-dom";
-import Posts from "./pages/Posts";
-import Layout from './components/Layout'
-
+import Layout from './components/Layout';
+import Posts from './pages/Posts';
+import PostDetails from './pages/PostDetails';
 function App() {
   return (
     <React.Fragment>
@@ -14,6 +14,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Posts />} />
+            <Route path=":subreddit/post/:id" element={<PostDetails />}  />
           </Routes>
         </BrowserRouter>
       </Layout>

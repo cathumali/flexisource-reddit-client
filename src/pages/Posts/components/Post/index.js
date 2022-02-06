@@ -1,140 +1,66 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import parse from 'html-react-parser';
+import moment from 'moment';
+import './index.scss';
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+// const getPermalink = ( str ) => {  
+//   let newStr = str.substring(0, str.length - 1);
+//   return newStr.substring(newStr.lastIndexOf("/") + 1, newStr.length)
+// }
 
 const YoutubeMedia = (props) => {
-  const { data } = props;
-  if(!data || data.type !== 'youtube.com') {
-    return null;
-  }
-  console.log(data.oembed.html,data)
-  return (
-    <div>
-      { data.oembed.html }
-      <div dangerouslySetInnerHTML={{ __html: data.oembed.html }} />
-      {/* <iframe 
-        width="560" 
-        height="315" 
-        src={data.provider_url} 
-        title={data.title}
-        thumbnail={data.thumbnail_url}
-        frameBorder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowFullScreen={false}>
-      </iframe> */}
-    </div>
-  )
+  const { media } = props;
+  if(!media || media.type !== 'youtube.com') { return null; }
+  return <div dangerouslySetInnerHTML={{ __html: parse(media.oembed.html)}} />
+}
+
+const ImagePreview = (props) => {
+  if( !props.preview){ return null; }
+  return <>
+      {props.preview.images.map( image => {
+        return (<CardMedia
+          key={image.id}
+          component="img"
+          height={image.source?.height}
+          width={image.source?.width}
+          image={parse(image.source?.url)}
+          alt="img"
+        />)    
+      })}
+  </>
 }
 
 export default function Post(props) {
-  const { post } = props;
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
+  const { post } = props; 
+  // const permalink = getPermalink(post.permalink);
   return (
-    <Card >
+    <Card sx={{ my: "2rem" }}>      
       <CardHeader
-        // avatar={
-        //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-        //     R
-        //   </Avatar>
-        // }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={post.title}
-        subheader="September 14, 2016"
-      />
-      {/* <CardMedia
-        component="img"
-        height="194"
-        image={post.small_img}
-        alt="Paella dish"
-      /> */}
+        title={<a href={`${post.subreddit}/post/${post.id}`} ><b>{post.title}</b></a>}
+        subheader={moment.unix(post.created).format('LL')}
+      />      
 
-      { post.media && <YoutubeMedia data={post.media} /> }
-
+      <ImagePreview preview={post.preview} />
+      <YoutubeMedia media={post.media} /> 
+      
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+          { post.selftext_html && <div dangerouslySetInnerHTML={{ __html: parse(post.selftext_html)}} /> }
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-            aside for 10 minutes.
-          </Typography>
-          <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-            medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-            occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-            large plate and set aside, leaving chicken and chorizo in the pan. Add
-            pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-            stirring often until thickened and fragrant, about 10 minutes. Add
-            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-          </Typography>
-          <Typography paragraph>
-            Add rice and stir very gently to distribute. Top with artichokes and
-            peppers, and cook without stirring, until most of the liquid is absorbed,
-            15 to 18 minutes. Reduce heat to medium-low, add reserved shrimp and
-            mussels, tucking them down into the rice, and cook again without
-            stirring, until mussels have opened and rice is just tender, 5 to 7
-            minutes more. (Discard any mussels that don’t open.)
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
-          </Typography>
-        </CardContent>
-      </Collapse>
-    </Card>
+      </CardActions>      
+    </Card> 
   );
 }

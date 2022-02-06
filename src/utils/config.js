@@ -18,5 +18,7 @@ export const config = {
     'controversial',
   ],
   defaultSort: 'hot',
-  defaultTopic: 'reactjs'
+  defaultTopic: 'reactjs',
+  navTitle: 'Reddit Client app',
+  apiBaseURL : 'https://www.reddit.com'
 }

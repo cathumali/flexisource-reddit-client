@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CssBaseline, Container, Box  } from '@mui/material';
+import { CssBaseline, Container  } from '@mui/material';
 import NavBar from '../NavBar';
 import './index.scss';
 

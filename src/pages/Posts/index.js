@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'; 
 import { connect } from 'react-redux'; 
-import { styled } from '@mui/material/styles';
-import { Grid, Box, Paper } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 
 import Filter from './components/Filter';
 import Post from './components/Post';
@@ -9,7 +8,7 @@ import {
   fetchPosts
 } from "../../redux/actions";
 import { config } from '../../utils/config';
- 
+
 const Posts = (props) => {
 
   useEffect(()=> {   
@@ -21,7 +20,6 @@ const Posts = (props) => {
     console.log(obj.value)
   }
 
-console.log(props.posts)
   return (
     <React.Fragment>       
        <Box sx={{ flexGrow: 1 }}>
@@ -42,11 +40,12 @@ console.log(props.posts)
               filterSelection={filterSelection}
             /> */}
           </Grid>
+
           <Grid item xs={12}>
-            { props.posts.data &&
-              props.posts.data.map((post, i) =>
-              <Post key={i} post={post} />
-            )}
+              { props.posts.data &&
+                props.posts.data.map((post, i) =>
+                <Post key={i} post={post} />
+              )}
           </Grid> 
         </Grid>
       </Box>
